@@ -1,19 +1,19 @@
 'use strict';
 
+const express = require('express');
+let DbManager = require('./db');
+let ToyModel = require('./models/ToyModel');
+let ToyController = require('./controllers/ToyController');
+
 // Constants
 const PORT = 8080;
 const HOST = '0.0.0.0';
 
 // App Configs
-const express = require('express');
 const app = express();
-const bodyParser = require('body-parser')
-app.use( bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
-
-let DbManager = require('./db');
-let ToyModel = require('./models/ToyModel')
-let ToyController = require('./controllers/ToyController')
+const bodyParser = require('body-parser');
+app.use( bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Database
 DbManager = new DbManager();
@@ -25,18 +25,6 @@ const toysSchema = ToyModel.toySchema();
 const Toys = mongoose.model('toys', toysSchema);
 
 ToyController = new ToyController(Toys);
-
-let main = function Main(){
-    return function funcA(){
-        console.log('funcA')
-    }
-    // function funcB(){
-    //     console.log('funcB')
-    // }
-}
-
-console.log('-- ', main)
-
 
 // Home
 app.get('/', (req, res) => {
