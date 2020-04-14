@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const bodyParser = require('body-parser');
 let DbManager = require('./db');
 let ToyModel = require('./models/ToyModel');
 let ToyController = require('./controllers/ToyController');
@@ -11,7 +12,6 @@ const HOST = '0.0.0.0';
 
 // App Configs
 const app = express();
-const bodyParser = require('body-parser');
 app.use( bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
