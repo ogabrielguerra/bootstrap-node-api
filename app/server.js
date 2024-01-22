@@ -5,9 +5,9 @@ const bodyParser = require('body-parser');
 const Mongoose = require('mongoose');
 
 const DbManager = require('./DbManager');
-const ToyModel = require('./models/ToyModel');
-const ToyController = require('./controllers/ToyController');
-const Routes = require('./routes/Routes');
+const ToyModel = require('./model/ToyModel');
+const ToyController = require('./controller/ToyController');
+const Routes = require('./routes/AppRoute');
 
 let mongooseInst = new DbManager(Mongoose);
 let ToyModelInst = new ToyModel();

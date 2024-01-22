@@ -1,13 +1,13 @@
 class ToyController{
 
     constructor(MongoDocument){
-        this.Document = MongoDocument;
+        this.MongoDocument = MongoDocument;
         this.ObjectID = require('mongodb').ObjectID;
     }
 
     list(req, res){
 
-        this.Document.find({}).then(function (data, err){
+        this.MongoDocument.find({}).then(function (data, err){
             res.send(data);
         }).catch(function (err) {
             res.send(err);
@@ -18,7 +18,7 @@ class ToyController{
         
         const id = req.params.id.trim();
         
-        this.Document.findById({
+        this.MongoDocument.findById({
             _id : this.ObjectID(id),            
         }).then(function (data, err){
             res.send(data);
@@ -33,7 +33,7 @@ class ToyController{
         let name = req.body.name;
         let color = req.body.color;
         
-        this.Document.create({
+        this.MongoDocument.create({
             name : name,
             color : color
         }).then(function (err){
@@ -50,7 +50,7 @@ class ToyController{
         let name = req.body.name;
         let color = req.body.color;
 
-        this.Document.updateOne(
+        this.MongoDocument.updateOne(
             {_id : this.ObjectID(id)},
             {$set: {name : name, color : color}},
         ).then(function (){
@@ -65,7 +65,7 @@ class ToyController{
 
         let id = req.body.id.trim();
 
-        this.Document.deleteOne(
+        this.MongoDocument.deleteOne(
             {_id : this.ObjectID(id)}
         ).then(function (){
             res.sendStatus(204)

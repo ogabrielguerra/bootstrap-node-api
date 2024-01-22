@@ -6,7 +6,7 @@ class Routes{
         const ToyController = configs.toyController;
         
         configs.app.get('/', (req, res) => {
-            res.send('API HOME');
+            res.send('API HOME 2.0');
         });
 
         app.get('/toys', (req, res) => {
