@@ -2,59 +2,32 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-let DbManager = require('./db');
-let ToyModel = require('./models/ToyModel');
-let ToyController = require('./controllers/ToyController');
+const Mongoose = require('mongoose');
 
-// Constants
-const PORT = 8080;
-const HOST = '0.0.0.0';
+const DbManager = require('./DbManager');
+const ToyModel = require('./model/ToyModel');
+const ToyController = require('./controller/ToyController');
+const Routes = require('./routes/AppRoute');
+
+let mongooseInst = new DbManager(Mongoose);
+let ToyModelInst = new ToyModel();
+let toyControllerInst = new ToyController(
+    mongooseInst.model('toys', ToyModelInst.toySchema()));
 
 // App Configs
+const PORT = 8080;
+const HOST = '0.0.0.0';
 const app = express();
-app.use( bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Database
-DbManager = new DbManager();
-const mongoose = DbManager.getMongooseInstance();
+const routeConfigs = {
+    "app": app, 
+    "toyController": toyControllerInst
+};
 
-// Toy Model and Document
-ToyModel = new ToyModel();
-const toysSchema = ToyModel.toySchema();
-const Toys = mongoose.model('toys', toysSchema);
-
-ToyController = new ToyController(Toys);
-
-// Home
-app.get('/', (req, res) => {
-    res.send('API HOME');
-});
-
-// List All
-app.get('/toys', (req, res) => {
-    ToyController.list(req, res);
-});
-
-// Get by ID
-app.get('/toy/:id', (req, res) => {
-    ToyController.detail(req, res);
-});
-
-// Insert
-app.post('/toy/add', (req, res) => {
-    ToyController.add(req, res)
-});
-
-// Update 
-app.put('/toy/update', (req, res) => {
-    ToyController.update(req, res)
-});
-
-// Delete
-app.post('/toy/delete', (req, res) => {
-    ToyController.delete(req, res)
-});
+new Routes(routeConfigs)
 
 app.listen(PORT, HOST);
+
 console.log(`Running on http://${HOST}:${PORT}`);
